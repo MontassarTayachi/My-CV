@@ -3,9 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Viewer</title>
+    <title>Montassar Tayachi</title>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #pdf-container {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #pdf-viewer {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+    </style>
 </head>
 <body>
-    <embed src="CV.pdf" width="100%" height="1000px" />
+    <div id="pdf-container">
+        <embed id="pdf-viewer" src="CV.pdf" width="100%" height="100%" />
+    </div>
+
+    <script>
+        // Fonction pour zoomer sur le PDF
+        function zoomIn() {
+            var pdfViewer = document.getElementById('pdf-viewer');
+            var currentTransform = window.getComputedStyle(pdfViewer).getPropertyValue('transform');
+            var currentScale = parseFloat(currentTransform.split(',')[3]);
+
+            // Limiter le zoom à 2 fois la taille originale
+            if (currentScale < 2) {
+                pdfViewer.style.transform = 'scale(' + (currentScale + 0.2) + ')';
+            }
+        }
+
+        // Fonction pour dézoomer sur le PDF
+        function zoomOut() {
+            var pdfViewer = document.getElementById('pdf-viewer');
+            var currentTransform = window.getComputedStyle(pdfViewer).getPropertyValue('transform');
+            var currentScale = parseFloat(currentTransform.split(',')[3]);
+
+            // Limiter le dézoom à 0.2 fois la taille originale
+            if (currentScale > 0.2) {
+                pdfViewer.style.transform = 'scale(' + (currentScale - 0.2) + ')';
+            }
+        }
+
+        // Ajouter des boutons pour zoomer et dézoomer
+        document.addEventListener("DOMContentLoaded", function () {
+            var zoomInButton = document.createElement('button');
+            zoomInButton.textContent = 'Zoom In';
+            zoomInButton.addEventListener('click', zoomIn);
+
+            var zoomOutButton = document.createElement('button');
+            zoomOutButton.textContent = 'Zoom Out';
+            zoomOutButton.addEventListener('click', zoomOut);
+
+            document.body.appendChild(zoomInButton);
+            document.body.appendChild(zoomOutButton);
+        });
+    </script>
 </body>
 </html>
