@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Montassar Tayachi</title>
-    
     <style>
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
 
         #pdf-container {
             width: 100%;
             height: 100vh;
-            overflow: hidden;
+            position: relative;
         }
 
         #pdf-viewer {
@@ -23,51 +23,65 @@
             height: 100%;
             transition: transform 0.5s ease;
         }
+
+        .zoom-button {
+            position: absolute;
+            bottom: 10px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .zoom-in {
+            margin: 1em;
+            right: 100px;
+        }
+
+        .zoom-out {
+            margin: 1em;
+            right: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .zoom-button {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="pdf-container">
         <embed id="pdf-viewer" src="CV.pdf" width="100%" height="100%" />
+        <button class="zoom-button zoom-in" onclick="zoomIn()">Zoom In</button>
+        <button class="zoom-button zoom-out" onclick="zoomOut()">Zoom Out</button>
     </div>
 
     <script>
-        // Fonction pour zoomer sur le PDF
         function zoomIn() {
             var pdfViewer = document.getElementById('pdf-viewer');
             var currentTransform = window.getComputedStyle(pdfViewer).getPropertyValue('transform');
-            var currentScale = parseFloat(currentTransform.split(',')[3]);
+            var currentScale = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[3]) : 1;
 
-            // Limiter le zoom à 2 fois la taille originale
             if (currentScale < 2) {
                 pdfViewer.style.transform = 'scale(' + (currentScale + 0.2) + ')';
             }
         }
 
-        // Fonction pour dézoomer sur le PDF
         function zoomOut() {
             var pdfViewer = document.getElementById('pdf-viewer');
             var currentTransform = window.getComputedStyle(pdfViewer).getPropertyValue('transform');
-            var currentScale = parseFloat(currentTransform.split(',')[3]);
+            var currentScale = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[3]) : 1;
 
-            // Limiter le dézoom à 0.2 fois la taille originale
             if (currentScale > 0.2) {
                 pdfViewer.style.transform = 'scale(' + (currentScale - 0.2) + ')';
             }
         }
-
-        // Ajouter des boutons pour zoomer et dézoomer
-        document.addEventListener("DOMContentLoaded", function () {
-            var zoomInButton = document.createElement('button');
-            zoomInButton.textContent = 'Zoom In';
-            zoomInButton.addEventListener('click', zoomIn);
-
-            var zoomOutButton = document.createElement('button');
-            zoomOutButton.textContent = 'Zoom Out';
-            zoomOutButton.addEventListener('click', zoomOut);
-
-            document.body.appendChild(zoomInButton);
-            document.body.appendChild(zoomOutButton);
-        });
     </script>
 </body>
 </html>
+
