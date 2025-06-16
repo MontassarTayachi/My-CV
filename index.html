@@ -1,87 +1,554 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Montassar Tayachi</title>
+    <title>CV - Montassar Tayachi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
+            box-sizing: border-box;
         }
 
-        #pdf-container {
-            width: 100%;
-            height: 100vh;
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            line-height: 1.4;
+            color: #333;
+            background-color: #f5f5f5;
+            font-size: 13px;
+        }
+
+        .container {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
             position: relative;
+            padding: 0;
         }
 
-        #pdf-viewer {
-            width: 100%;
-            height: 100%;
-            transition: transform 0.5s ease;
-        }
-
-        .zoom-button {
+        .language-switcher {
             position: absolute;
-            bottom: 10px;
-            padding: 10px;
-            background-color: #007BFF;
+            top: 10px;
+            right: 15px;
+            z-index: 100;
+        }
+
+        .lang-btn {
+            background: #c41e3a;
             color: white;
             border: none;
-            border-radius: 5px;
+            padding: 6px 10px;
+            margin: 0 1px;
             cursor: pointer;
-            z-index: 1000;
+            border-radius: 3px;
+            font-size: 10px;
+            transition: all 0.3s ease;
         }
 
-        .zoom-in {
-            margin: 1em;
-            right: 100px;
+        .lang-btn:hover {
+            background: #a01729;
         }
 
-        .zoom-out {
-            margin: 1em;
-            right: 10px;
+        .lang-btn.active {
+            background: #8b1629;
         }
 
-        @media (max-width: 600px) {
-            .zoom-button {
-                padding: 8px;
-                font-size: 14px;
+        .print-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #c41e3a;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 11px;
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:hover {
+            background: #a01729;
+        }
+
+        .header {
+            padding: 10mm 20mm 15mm 20mm;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20mm;
+            margin-bottom: 10mm;
+        }
+
+        .profile-image {
+            width: 30mm;
+            height: 30mm;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #c41e3a;
+        }
+
+        .profile-info h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .profile-info h2 {
+            font-size: 16px;
+            color: #c41e3a;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10mm;
+            font-size: 11px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #666;
+        }
+
+        .contact-item i {
+            color: #c41e3a;
+            width: 12px;
+            font-size: 10px;
+        }
+
+        .section {
+            padding: 8mm 20mm;
+            border-bottom: 1px solid #e0e0e0;
+            page-break-inside: avoid;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #c41e3a;
+            text-transform: uppercase;
+            margin-bottom: 6mm;
+            letter-spacing: 0.5px;
+        }
+
+        .about-text {
+            font-size: 12px;
+            line-height: 1.5;
+            color: #555;
+            text-align: justify;
+        }
+
+        .experience-item, .education-item {
+            margin-bottom: 6mm;
+            padding-bottom: 4mm;
+            border-bottom: 1px solid #f0f0f0;
+            page-break-inside: avoid;
+        }
+
+        .experience-item:last-child, .education-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 3mm;
+        }
+
+        .item-title {
+            font-weight: 700;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .item-company {
+            color: #c41e3a;
+            font-weight: 500;
+            margin-top: 1mm;
+            font-size: 12px;
+        }
+
+        .item-date {
+            color: #777;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .item-description {
+            color: #666;
+            margin-top: 2mm;
+            line-height: 1.4;
+            font-size: 11px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4mm;
+        }
+
+        .skill-category {
+            background: #f9f9f9;
+            padding: 4mm;
+            border-radius: 4px;
+            border-left: 2px solid #c41e3a;
+            page-break-inside: avoid;
+        }
+
+        .skill-category h4 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 3mm;
+            font-size: 12px;
+        }
+
+        .skill-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2mm;
+        }
+
+        .skill-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .skill-name {
+            font-weight: 500;
+            color: #555;
+            font-size: 10px;
+        }
+
+        .skill-bar {
+            width: 20mm;
+            height: 3px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #c41e3a, #e74c3c);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .certifications-list {
+            list-style: none;
+        }
+
+        .certifications-list li {
+            padding: 2mm 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: flex-start;
+            gap: 3mm;
+            font-size: 11px;
+        }
+
+        .certifications-list li:last-child {
+            border-bottom: none;
+        }
+
+        .certifications-list i {
+            color: #c41e3a;
+            margin-top: 1mm;
+            font-size: 10px;
+        }
+
+        @media print {
+            body {
+                background: white;
             }
+            .container {
+                box-shadow: none !important;
+                margin: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                padding: 0 !important;
+            }
+            .language-switcher, .print-btn {
+                display: none;
+            }
+            .skills-grid{
+                grid-template-columns: 1fr 1fr 1fr !important;
+            }
+           
         }
+
+     
     </style>
 </head>
 <body>
-    <div id="pdf-container">
-        <embed id="pdf-viewer" src="CV.pdf" width="100%" height="100%" />
-        <button class="zoom-button zoom-in" onclick="zoomIn()">Zoom In</button>
-        <button class="zoom-button zoom-out" onclick="zoomOut()">Zoom Out</button>
+    <button class="print-btn" onclick="printCV()">
+            <i class="fas fa-print"></i> <span data-fr="Imprimer PDF" data-en="Print PDF">Imprimer PDF</span>
+        </button>
+    <div class="container">
+        <!-- Language Switcher -->
+        <div class="language-switcher">
+            <button class="lang-btn active" onclick="switchLanguage('fr')">FR</button>
+            <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
+        </div>
+
+        <!-- Print Button -->
+        
+
+        <!-- Header Section -->
+        <div class="header">
+            <div class="profile-section">
+                <img src="montassar.jpg" alt="Montassar Tayachi" class="profile-image">
+                <div class="profile-info">
+                    <h1>Montassar Tayachi</h1>
+                    <h2 data-fr="Étudiant Ingénieur - Systèmes Embarqués & IoT" data-en="Engineering Student - Embedded Systems & IoT">Étudiant Ingénieur - Systèmes Embarqués & IoT</h2>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>(+216) 58-487-935</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>montassartayachi2002@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>80, Rue Hadi Abidi, Mateur</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-globe"></i>
+                    <span>montassartayachi.github.io/Portfolio</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-github"></i>
+                    <span>github.com/MontassarTayachi</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    <span>linkedin.com/in/montassar</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="section" id="about">
+            <h3 class="section-title" data-fr="Profil" data-en="Profile">Profil</h3>
+            <p class="about-text">
+                <span data-fr="Étudiant en cycle d'ingénieur en Systèmes Embarqués et Objets Connectés, titulaire d'une Licence en Informatique. Mon profil polyvalent me permet de combiner des compétences solides en développement logiciel (JavaScript, Java, Python, C) avec une expertise croissante en électronique embarquée, IoT et systèmes temps réel. Je suis passionné par la création de solutions intelligentes mêlant hardware et software." data-en="Engineering student in Embedded Systems and Connected Objects, holder of a Computer Science degree. My versatile profile allows me to combine solid software development skills (JavaScript, Java, Python, C) with growing expertise in embedded electronics, IoT and real-time systems. I am passionate about creating intelligent solutions combining hardware and software.">
+                    Étudiant en cycle d'ingénieur en Systèmes Embarqués et Objets Connectés, titulaire d'une Licence en Informatique. Mon profil polyvalent me permet de combiner des compétences solides en développement logiciel (JavaScript, Java, Python, C) avec une expertise croissante en électronique embarquée, IoT et systèmes temps réel. Je suis passionné par la création de solutions intelligentes mêlant hardware et software.
+                </span>
+            </p>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="section" id="experience">
+            <h3 class="section-title" data-fr="Expériences" data-en="Experience">Expériences</h3>
+            
+            <div class="experience-item">
+                <div class="item-header">
+                    <div>
+                        <div class="item-title">BeeCoder</div>
+                        <div class="item-company" data-fr="Projet de Plateforme E-commerce" data-en="E-commerce Platform Project">Projet de Plateforme E-commerce</div>
+                    </div>
+                    <div class="item-date" data-fr="Janvier 2024/Mai 2024" data-en="January 2024/May 2024">Janvier 2024-Mai 2024</div>
+                </div>
+                <div class="item-description" data-fr="Développement d'une plateforme e-commerce intelligente avec React.js et Node.js. Intégration d'un système de recommandation, gestion de stock avancée, paiement Flouci, et géolocalisation des boutiques." data-en="Development of an intelligent e-commerce platform with React.js and Node.js. Integration of a recommendation system, advanced inventory management, Flouci payment, and store geolocation.">
+                    Développement d'une plateforme e-commerce intelligente avec React.js et Node.js. Intégration d'un système de recommandation, gestion de stock avancée, paiement Flouci, et géolocalisation des boutiques.
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="item-header">
+                    <div>
+                        <div class="item-title">Elfouladh</div>
+                        <div class="item-company" data-fr="Développement Full-Stack" data-en="Full-Stack Development">Développement Full-Stack</div>
+                    </div>
+                    <div class="item-date" data-fr="Juin 2023/Août 2023" data-en="June 2023/August 2023">Juin 2023 - Août 2023</div>
+                </div>
+                <div class="item-description" data-fr="Création d'un système de gestion de stocks web et d'une application Flutter synchronisée avec un backend Express.js. Optimisation des processus métier et interface utilisateur intuitive." data-en="Creation of a web inventory management system and a Flutter application synchronized with an Express.js backend. Business process optimization and intuitive user interface.">
+                    Création d'un système de gestion de stocks web et d'une application Flutter synchronisée avec un backend Express.js. Optimisation des processus métier et interface utilisateur intuitive.
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="item-header">
+                    <div>
+                        <div class="item-title">Leoni</div>
+                        <div class="item-company" data-fr="Stage Service Informatique" data-en="IT Department Internship">Stage Service Informatique</div>
+                    </div>
+                    <div class="item-date" data-fr="Juillet 2022/Juin 2022" data-en="July 2022/June 2022">
+                        Juillet 2022-Juin 2022
+                    </div>
+                </div>
+                <div class="item-description" data-fr="Stage au service informatique, support technique et maintenance des systèmes d'information. Participation aux projets d'amélioration de l'infrastructure IT." data-en="IT department internship, technical support and information systems maintenance. Participation in IT infrastructure improvement projects.">
+                    Stage au service informatique, support technique et maintenance des systèmes d'information. Participation aux projets d'amélioration de l'infrastructure IT.
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Section -->
+        <div class="section" id="education">
+            <h3 class="section-title" data-fr="Formation" data-en="Education">Formation</h3>
+            
+            <div class="education-item">
+                <div class="item-header">
+                    <div>
+                        <div class="item-title" data-fr="Diplôme National d'Ingénieur" data-en="National Engineering Degree">Diplôme National d'Ingénieur</div>
+                        <div class="item-company" data-fr="Systèmes Embarqués et Objets Connectés - Institut Supérieur d'Informatique de Tunis" data-en="Embedded Systems and Connected Objects - Higher Institute of Computer Science of Tunis">Systèmes Embarqués et Objets Connectés - Institut Supérieur d'Informatique de Tunis</div>
+                    </div>
+                    <div class="item-date">2024-2025</div>
+                </div>
+            </div>
+
+            <div class="education-item">
+                <div class="item-header">
+                    <div>
+                        <div class="item-title" data-fr="Licence en Sciences de l'Informatique" data-en="Bachelor's Degree in Computer Science">Licence en Sciences de l'Informatique</div>
+                        <div class="item-company" data-fr="Institut Supérieur des Sciences Appliquées et de Technologie de Mateur" data-en="Higher Institute of Applied Sciences and Technology of Mateur">Institut Supérieur des Sciences Appliquées et de Technologie de Mateur</div>
+                    </div>
+                    <div class="item-date">2021-2024</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section" id="skills">
+            <h3 class="section-title" data-fr="Compétences" data-en="Skills">Compétences</h3>
+            
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h4 data-fr="Développement Logiciel" data-en="Software Development">Développement Logiciel</h4>
+                    <div class="skill-item">
+                        <span class="skill-name">JavaScript</span>
+                       
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Python</span>
+                       
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Java</span>
+                       
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">C</span>
+                       </div>
+                    <div class="skill-item">
+                        <span class="skill-name">React.js</span>
+                          </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Node.js</span>
+                         </div>
+                </div>
+
+                <div class="skill-category">
+                    <h4 data-fr="IoT & Systèmes Embarqués" data-en="IoT & Embedded Systems">IoT & Systèmes Embarqués</h4>
+                    <div class="skill-item">
+                        <span class="skill-name">ESP32</span>
+                          </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Arduino</span>
+                         </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Node-RED</span>
+                         </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Firebase IoT</span>
+                          </div>
+                    <div class="skill-item">
+                        <span class="skill-name" data-fr="Capteurs" data-en="Sensors">Capteurs</span>
+                          </div>
+                </div>
+
+                <div class="skill-category">
+                    <h4 data-fr="Bases de Données & Outils" data-en="Databases & Tools">Bases de Données & Outils</h4>
+                    <div class="skill-item">
+                        <span class="skill-name">PostgreSQL</span>
+                        </div>
+                    <div class="skill-item">
+                        <span class="skill-name">MongoDB</span>
+                           </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Git</span>
+                        </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Docker</span>
+                         </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Flutter</span>
+                           </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications Section -->
+        <div class="section" id="certifications">
+            <h3 class="section-title" data-fr="Certifications" data-en="Certifications">Certifications</h3>
+            <ul class="certifications-list">
+                <li>
+                    <i class="fas fa-certificate"></i>
+                    <div>
+                        <strong>Python for Data Science</strong> - CDOSS
+                        <div style="color: #666; font-size: 14px; margin-top: 4px;" data-fr="Manipulation de données, analyse et visualisation avec Pandas, NumPy, Matplotlib" data-en="Data manipulation, analysis and visualization with Pandas, NumPy, Matplotlib">
+                            Manipulation de données, analyse et visualisation avec Pandas, NumPy, Matplotlib
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <script>
-        function zoomIn() {
-            var pdfViewer = document.getElementById('pdf-viewer');
-            var currentTransform = window.getComputedStyle(pdfViewer).getPropertyValue('transform');
-            var currentScale = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[3]) : 1;
-
-            if (currentScale < 2) {
-                pdfViewer.style.transform = 'scale(' + (currentScale + 0.2) + ')';
-            }
+        function printCV() {
+            window.print();
         }
 
-        function zoomOut() {
-            var pdfViewer = document.getElementById('pdf-viewer');
-            var currentTransform = window.getComputedStyle(pdfViewer).getPropertyValue('transform');
-            var currentScale = currentTransform !== 'none' ? parseFloat(currentTransform.split(',')[3]) : 1;
+        function switchLanguage(lang) {
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[onclick="switchLanguage('${lang}')"]`).classList.add('active');
 
-            if (currentScale > 0.2) {
-                pdfViewer.style.transform = 'scale(' + (currentScale - 0.2) + ')';
-            }
+            // Update content
+            document.querySelectorAll('[data-fr][data-en]').forEach(element => {
+                if (lang === 'fr') {
+                    element.textContent = element.getAttribute('data-fr');
+                } else {
+                    element.textContent = element.getAttribute('data-en');
+                }
+            });
         }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            switchLanguage('fr');
+        });
     </script>
 </body>
 </html>
-
